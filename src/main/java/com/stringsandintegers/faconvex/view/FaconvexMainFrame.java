@@ -9,6 +9,7 @@ import com.stringsandintegers.faconvex.control.FaconvexMainController;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
 import java.io.File;
 
 /**
@@ -35,12 +36,12 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
 
         jMenuItem3 = new javax.swing.JMenuItem();
         jPanelActions = new javax.swing.JPanel();
-        jButtonExportHTML = new javax.swing.JButton();
         jButtonExportPDF = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListConvs = new javax.swing.JList();
         jLabelStatus = new javax.swing.JLabel();
+        jLabelDot = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -58,9 +59,6 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
 
         jPanelActions.setBorder(javax.swing.BorderFactory.createTitledBorder("Actions"));
 
-        jButtonExportHTML.setText("Export as HTML file");
-        jButtonExportHTML.setEnabled(false);
-
         jButtonExportPDF.setText("Export as PDF file");
         jButtonExportPDF.setEnabled(false);
         jButtonExportPDF.setMaximumSize(new java.awt.Dimension(125, 23));
@@ -73,17 +71,13 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
             jPanelActionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelActionsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelActionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonExportHTML, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                    .addComponent(jButtonExportPDF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButtonExportPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanelActionsLayout.setVerticalGroup(
             jPanelActionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelActionsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonExportHTML, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(jButtonExportPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -111,6 +105,8 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
 
         jLabelStatus.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabelStatus.setText("Ready!");
+
+        jLabelDot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/stringsandintegers/faconvex/res/bullet_green.png"))); // NOI18N
 
         jMenuFile.setText("File");
 
@@ -157,11 +153,13 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanelActions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabelDot, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -173,11 +171,16 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
                         .addGap(84, 84, 84)
                         .addComponent(jPanelActions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jLabelStatus)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(jLabelStatus))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabelDot, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
 
         pack();
@@ -194,10 +197,13 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         //Change the label text in "Loading..."
         jLabelStatus.setText("Loading...");
         
-        //Prompts the "open" dialog
+        //Set the status dot red.
+        jLabelDot.setIcon(new ImageIcon(getClass().getResource("/com/stringsandintegers/faconvex/res/bullet_red.png")));
+        
+        //Prompt the "open" dialog
         int result = fc.showOpenDialog(this);
         
-        //Checks whether the user chose the messages' file. If so, the procedure retrieves the location of the choosen file and passes it to the main controller which returns a list of the conversations found; else does nothing
+        //Check whether the user chose the messages' file. If so, the procedure retrieves the location of the choosen file and passes it to the main controller which returns a list of the conversations found; else does nothing
         if (result == JFileChooser.APPROVE_OPTION) {
             File messagesFile = fc.getSelectedFile();
             try {
@@ -215,11 +221,13 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         
         //Change the label text in "Ready!"
         jLabelStatus.setText("Ready!");
+        
+        //Set the status dot to green
+        jLabelDot.setIcon(new ImageIcon(getClass().getResource("/com/stringsandintegers/faconvex/res/bullet_green.png")));
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
     private void jListConvsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jListConvsFocusGained
         if (jListConvs.getSelectedIndex() != -1) {
-            jButtonExportHTML.setEnabled(true);
             jButtonExportPDF.setEnabled(true);
             jMenuItemExport.setEnabled(true);
         }
@@ -230,7 +238,7 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCloseActionPerformed
 
     private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
-        AboutFrame.main(null);
+        AboutFrame.main(this);
     }//GEN-LAST:event_jMenuItemAboutActionPerformed
 
     /**
@@ -263,14 +271,19 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FaconvexMainFrame().setVisible(true);
+               FaconvexMainFrame fmf = new FaconvexMainFrame();
+               
+               //Center the frame
+               fmf.setLocationRelativeTo(null);
+               
+               fmf.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonExportHTML;
     private javax.swing.JButton jButtonExportPDF;
+    private javax.swing.JLabel jLabelDot;
     private javax.swing.JLabel jLabelStatus;
     private javax.swing.JList jListConvs;
     private javax.swing.JMenuBar jMenuBar1;

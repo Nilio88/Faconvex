@@ -39,10 +39,9 @@ public class FaconvexMainController {
     }
     
     /**Exports the selected conversation in
-     * an HTML file format or in a PDF file
-     * format according the parameter given in input.
+     * a file format according the parameter given in input.
      * @param conversationIndex: the index of the conversation to export;
-     * @param format: the format of the file to export. Possible values: <br />-Format_Costants.HTML as HTML file;<br />-Format_Costants.PDF as PDF file;
+     * @param format: the format of the file to export. The possible values are stored in the DocumentCostantTypes interface.
      * @throws Exception if an error occurs during the process.
      */
     public static void exportConversation(int conversationIndex, int format) throws Exception {
