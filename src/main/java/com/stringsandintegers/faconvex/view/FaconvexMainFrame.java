@@ -59,6 +59,7 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
 
         jPanelActions.setBorder(javax.swing.BorderFactory.createTitledBorder("Actions"));
 
+        jButtonExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
         jButtonExportPDF.setText("Export as PDF file");
         jButtonExportPDF.setEnabled(false);
         jButtonExportPDF.setMaximumSize(new java.awt.Dimension(125, 23));
@@ -106,7 +107,7 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         jLabelStatus.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabelStatus.setText("Ready!");
 
-        jLabelDot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/stringsandintegers/faconvex/res/bullet_green.png"))); // NOI18N
+        jLabelDot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bullet_green.png"))); // NOI18N
 
         jMenuFile.setText("File");
 
@@ -158,7 +159,7 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelDot, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelDot)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -174,11 +175,12 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(15, 15, 15)
-                                .addComponent(jLabelStatus))
-                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelDot)
+                                .addGap(11, 11, 11))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLabelDot, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelStatus)
+                                .addGap(18, 18, 18)))
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(104, Short.MAX_VALUE))
         );
@@ -198,7 +200,7 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         jLabelStatus.setText("Loading...");
         
         //Set the status dot red.
-        jLabelDot.setIcon(new ImageIcon(getClass().getResource("/com/stringsandintegers/faconvex/res/bullet_red.png")));
+        jLabelDot.setIcon(new ImageIcon(getClass().getResource("/bullet_red.png")));
         
         //Prompt the "open" dialog
         int result = fc.showOpenDialog(this);
@@ -223,7 +225,7 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         jLabelStatus.setText("Ready!");
         
         //Set the status dot to green
-        jLabelDot.setIcon(new ImageIcon(getClass().getResource("/com/stringsandintegers/faconvex/res/bullet_green.png")));
+        jLabelDot.setIcon(new ImageIcon(getClass().getResource("/bullet_green.png")));
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
     private void jListConvsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jListConvsFocusGained
