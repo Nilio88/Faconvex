@@ -10,6 +10,9 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 import java.io.File;
 
 /**
@@ -23,6 +26,28 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
      */
     public FaconvexMainFrame() {
         initComponents();
+        
+        //Initialize the ListSelectionModel of jListConvs
+        ListSelectionModel lsm = jListConvs.getSelectionModel();
+        
+        //Add a ListSelectionListener
+        lsm.addListSelectionListener(new ListSelectionListener() {
+            
+            public void valueChanged(ListSelectionEvent event) {
+                ListSelectionModel srcList = (ListSelectionModel)event.getSource();
+                
+                //If an index is selected, enable the "export" buttons
+                if(!srcList.isSelectionEmpty()) {
+                    jButtonExportPDF.setEnabled(true);
+                    jMenuItemExport.setEnabled(true);
+                }
+                else {
+                    //No index is selected: disable the "export" buttons
+                    jButtonExportPDF.setEnabled(false);
+                    jMenuItemExport.setEnabled(false);
+                }
+            }
+        });
     }
 
     /**
@@ -85,12 +110,8 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Conversations"));
 
+        jListConvs.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jListConvs.setVerifyInputWhenFocusTarget(false);
-        jListConvs.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jListConvsFocusGained(evt);
-            }
-        });
         jScrollPane1.setViewportView(jListConvs);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -111,7 +132,7 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
 
         jMenuFile.setText("File");
 
-        jMenuItemOpen.setText("Open...");
+        jMenuItemOpen.setText("Open messages file...");
         jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemOpenActionPerformed(evt);
@@ -202,6 +223,11 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         //Set the status dot red.
         jLabelDot.setIcon(new ImageIcon(getClass().getResource("/bullet_red.png")));
         
+        //Disable the buttons
+        jButtonExportPDF.setEnabled(false);
+        jMenuFile.setEnabled(false);
+        jMenuHelp.setEnabled(false);
+        
         //Prompt the "open" dialog
         int result = fc.showOpenDialog(this);
         
@@ -226,14 +252,12 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         
         //Set the status dot to green
         jLabelDot.setIcon(new ImageIcon(getClass().getResource("/bullet_green.png")));
+        
+        //Enable the buttons back again
+        jButtonExportPDF.setEnabled(true);
+        jMenuFile.setEnabled(true);
+        jMenuHelp.setEnabled(true);
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
-
-    private void jListConvsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jListConvsFocusGained
-        if (jListConvs.getSelectedIndex() != -1) {
-            jButtonExportPDF.setEnabled(true);
-            jMenuItemExport.setEnabled(true);
-        }
-    }//GEN-LAST:event_jListConvsFocusGained
 
     private void jMenuItemCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCloseActionPerformed
         System.exit(0);
