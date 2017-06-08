@@ -8,9 +8,11 @@ package com.stringsandintegers.faconvex.control;
 import com.stringsandintegers.faconvex.view.*;
 import com.stringsandintegers.faconvex.model.Conversation;
 import com.stringsandintegers.faconvex.model.ConversationsList;
+import com.stringsandintegers.faconvex.document.Document;
+import com.stringsandintegers.faconvex.document.DocumentFactory;
 import javax.swing.DefaultListModel;
 import java.io.File;
-
+import java.util.List;
 
 /**
  *
@@ -45,6 +47,15 @@ public class FaconvexMainController {
      * @throws Exception if an error occurs during the process.
      */
     public static void exportConversation(int conversationIndex, int format) throws Exception {
+        //Create a blank output document using the DocumentFactory
+        DocumentFactory documentFactory = DocumentFactory.getDocumentFactory();
+        Document outputDocument = documentFactory.newDocument(format);
         
+        //Get the conversation to export
+        List<Conversation> conversations = ConversationsList.getConversations();
+        Conversation conversationToExport = conversations.get(conversationIndex);
+        
+        //Add a title to the output document (in this case it's the header of the conversation)
+        outputDocument.addTitle(conversationToExport.getHead());
     }
 }

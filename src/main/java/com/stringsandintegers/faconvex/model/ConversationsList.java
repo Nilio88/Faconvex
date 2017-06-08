@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -82,6 +84,52 @@ public class ConversationsList {
         return conversationsList;
     }
     
-    //Class' variables
+    /**
+     * Scans the conversations list to find the owner of the
+     * facebook account among the interlocutors found in the
+     * messages file.
+     */
+    private static void getOwner() {
+        HashMap<String, Integer> interlocutors = new HashMap();
+        
+        for(Conversation conversation: conversationsList) {
+            String header = conversation.getHead();
+            String convInterlocutors[] = header.split(",");
+            
+            //Trim the name of the interlocutors and add them to the HashMap
+            for(String interlocutor: convInterlocutors) {
+                interlocutor = interlocutor.trim();
+                
+                if(interlocutors.containsKey(interlocutor)) {
+                    //Increment the associated value
+                    int count = interlocutors.get(interlocutor);
+                    count++;
+                    interlocutors.put(interlocutor, count);
+                }
+                else {
+                    //Add a new Key-Value pair
+                    interlocutors.put(interlocutor, 0);
+                }
+            }
+        }
+        
+        //Find the interlocutor's name whose count is the maximum in the hashmap
+        int maxCount = 0;
+        String keyToMaxCount = null;
+        
+        for(Map.Entry<String, Integer> entry : interlocutors.entrySet()) {
+            int count = entry.getValue();
+            
+            if(count > maxCount) {
+                keyToMaxCount = entry.getKey();
+                maxCount = count;
+            }
+        }
+        
+        owner = keyToMaxCount;
+    }
+    
+    //Class variables
     private static List<Conversation> conversationsList = null;
+    private static String owner;
 }

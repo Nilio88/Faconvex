@@ -22,7 +22,7 @@ public class DocumentFactory {
      * if it isn't null.
      * @return The istance of DocumentFactory.
      */
-    public DocumentFactory getDocumentFactory(){
+    public static DocumentFactory getDocumentFactory(){
         if (df == null)
             df = new DocumentFactory();
         return df;
@@ -47,6 +47,6 @@ public class DocumentFactory {
         }
     }
     
-    //Instance variables
-    private DocumentFactory df;
+    //Class variables
+    private static DocumentFactory df;
 }
