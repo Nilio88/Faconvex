@@ -8,6 +8,7 @@ package com.stringsandintegers.faconvex.control;
 import com.stringsandintegers.faconvex.view.*;
 import com.stringsandintegers.faconvex.model.Conversation;
 import com.stringsandintegers.faconvex.model.ConversationsList;
+import com.stringsandintegers.faconvex.model.Message;
 import com.stringsandintegers.faconvex.document.Document;
 import com.stringsandintegers.faconvex.document.DocumentFactory;
 import javax.swing.DefaultListModel;
@@ -57,5 +58,16 @@ public class FaconvexMainController {
         
         //Add a title to the output document (in this case it's the header of the conversation)
         outputDocument.addTitle(conversationToExport.getHead());
+        
+        //Add the messages to the output file
+        String owner = ConversationsList.getOwner();
+        
+        for(Message message: conversationToExport.getMessages()) {
+            String sender = message.getSender().trim();
+            if(message.getSender().equalsIgnoreCase(owner))
+                outputDocument.addOwnerMessage(message);
+            else
+                outputDocument.addRecipientMessage(message);
+        }
     }
 }

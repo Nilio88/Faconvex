@@ -45,7 +45,7 @@ public class Conversation {
     /**Returns the list of messages in this conversation.
      * @return the List of messages in this conversation.
      */
-    public List getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
     

@@ -89,7 +89,7 @@ public class ConversationsList {
      * facebook account among the interlocutors found in the
      * messages file.
      */
-    private static void getOwner() {
+    private static void findOwner() {
         HashMap<String, Integer> interlocutors = new HashMap();
         
         for(Conversation conversation: conversationsList) {
@@ -127,6 +127,15 @@ public class ConversationsList {
         }
         
         owner = keyToMaxCount;
+    }
+    
+    /**
+     * Returns the owner of the Facebook account.
+     * @return The name of the owner of the Facebook account found among the
+     * interlocutors of the conversations.
+     */
+    public static String getOwner() {
+        return owner;
     }
     
     //Class variables
