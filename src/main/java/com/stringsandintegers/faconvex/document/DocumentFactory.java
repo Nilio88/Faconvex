@@ -4,6 +4,8 @@
  */
 package com.stringsandintegers.faconvex.document;
 
+import java.io.IOException;
+
 /**
  * Factory class used to create the instance of the output document.
  * 
@@ -34,7 +36,7 @@ public class DocumentFactory {
      * @param type Type of the output document (see DocumentCostantTypes interface).
      * @return An instance of Document (a class that implements the Document interface).
      */
-    public Document newDocument(int type) {
+    public Document newDocument(int type) throws IOException {
         
         switch(type) {
             case DocumentCostantTypes.PDF_DOCUMENT:

@@ -13,6 +13,7 @@ import com.stringsandintegers.faconvex.document.Document;
 import com.stringsandintegers.faconvex.document.DocumentFactory;
 import javax.swing.DefaultListModel;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public class FaconvexMainController {
      * @param format: the format of the file to export. The possible values are stored in the DocumentCostantTypes interface.
      * @throws Exception if an error occurs during the process.
      */
-    public static void exportConversation(int conversationIndex, int format) throws Exception {
+    public static void exportConversation(int conversationIndex, int format, File savePath) throws IOException {
         //Create a blank output document using the DocumentFactory
         DocumentFactory documentFactory = DocumentFactory.getDocumentFactory();
         Document outputDocument = documentFactory.newDocument(format);
@@ -64,10 +65,13 @@ public class FaconvexMainController {
         
         for(Message message: conversationToExport.getMessages()) {
             String sender = message.getSender().trim();
-            if(message.getSender().equalsIgnoreCase(owner))
+            if(sender.equalsIgnoreCase(owner))
                 outputDocument.addOwnerMessage(message);
             else
                 outputDocument.addRecipientMessage(message);
         }
+        
+        //Save and close the document
+        outputDocument.close(savePath);
     }
 }

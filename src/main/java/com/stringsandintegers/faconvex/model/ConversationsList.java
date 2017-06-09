@@ -75,6 +75,8 @@ public class ConversationsList {
         //Assigns the conversations list extracted to the static variable thus making it persistent
         conversationsList = conversations;
         
+        //Find the owner of the messages file
+        findOwner();
     }
     
     /** Return the conversations list extracted from the file.

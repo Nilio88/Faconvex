@@ -6,6 +6,7 @@
 package com.stringsandintegers.faconvex.view;
 
 import com.stringsandintegers.faconvex.control.FaconvexMainController;
+import com.stringsandintegers.faconvex.document.DocumentCostantTypes;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JOptionPane;
@@ -14,6 +15,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import java.io.File;
+import java.io.IOException;
 
 /**
  *
@@ -90,6 +92,11 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         jButtonExportPDF.setMaximumSize(new java.awt.Dimension(125, 23));
         jButtonExportPDF.setMinimumSize(new java.awt.Dimension(125, 23));
         jButtonExportPDF.setPreferredSize(new java.awt.Dimension(125, 23));
+        jButtonExportPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExportPDFActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelActionsLayout = new javax.swing.GroupLayout(jPanelActions);
         jPanelActions.setLayout(jPanelActionsLayout);
@@ -237,7 +244,6 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
             try {
            
                 jListConvs.setModel(FaconvexMainController.openFile(messagesFile));
-                
             }
             catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "An error occurred while loading the conversations list:\n" + ex, "Error", JOptionPane.ERROR_MESSAGE);
@@ -254,7 +260,9 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         jLabelDot.setIcon(new ImageIcon(getClass().getResource("/bullet_green.png")));
         
         //Enable the buttons back again
-        jButtonExportPDF.setEnabled(true);
+        if (!jListConvs.isSelectionEmpty())
+            jButtonExportPDF.setEnabled(true);
+        
         jMenuFile.setEnabled(true);
         jMenuHelp.setEnabled(true);
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
@@ -266,6 +274,59 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
     private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
         AboutFrame.main(this);
     }//GEN-LAST:event_jMenuItemAboutActionPerformed
+
+    private void jButtonExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExportPDFActionPerformed
+        //Open the file chooser to get the path where to save the output document
+        JFileChooser fc = new JFileChooser();
+        
+        //Change the label text in "Loading..."
+        jLabelStatus.setText("Exporting...");
+        
+        //Set the status dot red.
+        jLabelDot.setIcon(new ImageIcon(getClass().getResource("/bullet_red.png")));
+        
+        //Disable the buttons
+        jButtonExportPDF.setEnabled(false);
+        jMenuFile.setEnabled(false);
+        jMenuHelp.setEnabled(false);
+        
+        int result = fc.showSaveDialog(this);
+        
+        if(result == JFileChooser.APPROVE_OPTION) {
+            File outputFile = fc.getSelectedFile();
+            
+            System.out.println("Saving file in: " + outputFile);
+            
+            //Export the selected conversation by invoking FaconvexMainController
+            int selectedIndex = jListConvs.getSelectedIndex();
+            
+            System.out.println("Selected element: " + selectedIndex);
+            
+            try {
+                FaconvexMainController.exportConversation(selectedIndex, DocumentCostantTypes.PDF_DOCUMENT, outputFile);
+            }
+            catch(IOException ex) {
+                JOptionPane.showMessageDialog(this, "An error occurred while exporting the conversation:\n" + ex, "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
+        }
+        else if(result == JFileChooser.ERROR_OPTION)
+            JOptionPane.showMessageDialog(this, "An error occurred while saving the conversation file.", "Error", JOptionPane.ERROR_MESSAGE);
+        
+        //Change the label text in "Ready!"
+        jLabelStatus.setText("Ready!");
+        
+        //Set the status dot to green
+        jLabelDot.setIcon(new ImageIcon(getClass().getResource("/bullet_green.png")));
+        
+        //Enable the buttons back again
+        jButtonExportPDF.setEnabled(true);
+        jMenuFile.setEnabled(true);
+        jMenuHelp.setEnabled(true);
+        
+        //Feedback message for the user
+        JOptionPane.showMessageDialog(this, "Conversation exported successfully in a PDF file.", "Export to PDF",JOptionPane.PLAIN_MESSAGE);
+    }//GEN-LAST:event_jButtonExportPDFActionPerformed
 
     /**
      * @param args the command line arguments
