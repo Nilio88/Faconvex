@@ -66,11 +66,42 @@ class DocumentPDF implements Document {
     }
     
     public void addOwnerMessage(Message message) throws IOException {
+        //Convert the message into a string to be printed on the PDF document
+        String outMessage = message.getSender() + " at " + message.getDate() + "\n" + message.getMessage();
         
+        //Initialize the font size and type for the message
+        PDFont messageFont = PDType1Font.TIMES_ROMAN;
+        int messageFontSize = 16;
+        
+        //Initialize information for right-aligning the message
+        float messageWidth = (messageFont.getStringWidth(outMessage) / 1000.0f) * messageFontSize;
+        
+        //Print the message on the PDF document
+        content.beginText();
+        content.setFont(messageFont, messageFontSize);
+        content.moveTextPositionByAmount(-messageWidth, 0);
+        content.showText(outMessage);
+        content.moveTextPositionByAmount(messageWidth, 0);
+        content.newLine();
+        content.newLine();
+        content.endText();
     }
     
     public void addRecipientMessage(Message message) throws IOException {
+        //Convert the message into a string to be printed on the PDF document
+        String outMessage = message.getSender() + " at " + message.getDate() + "\n" + message.getMessage();
         
+        //Initialize the font size and type for the message
+        PDFont messageFont = PDType1Font.TIMES_ROMAN;
+        int messageFontSize = 16;
+        
+        //Print the message on the PDF document (left-aligned)
+        content.beginText();
+        content.setFont(messageFont, messageFontSize);
+        content.showText(outMessage);
+        content.newLine();
+        content.newLine();
+        content.endText();
     }
     
     public void close(File outputFile) throws IOException {
