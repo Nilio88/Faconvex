@@ -10,6 +10,7 @@ import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 /**
@@ -26,9 +27,9 @@ class DocumentPDF implements Document {
      */
     DocumentPDF() throws IOException {
         pdfDocument = new PDDocument();
-        PDPage firstPage = new PDPage();
-        pdfDocument.addPage(firstPage);
-        content = new PDPageContentStream(pdfDocument, firstPage);
+        page = new PDPage();
+        pdfDocument.addPage(page);
+        content = new PDPageContentStream(pdfDocument, page);
     }
     
     public void addTitle(String title) throws IOException {
@@ -47,12 +48,21 @@ class DocumentPDF implements Document {
             }
         }
         
+        //Get information for centering the title
+        int marginTop = 20;
+        PDFont titleFont = PDType1Font.HELVETICA_BOLD;
+        int titleFontSize = 25;
+        float titleWidth = titleFont.getStringWidth(outTitle) / 1000 * titleFontSize;
+        float titleHeight = titleFont.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * titleFontSize;
+        
         //Print the title in the PDF document
         content.beginText();
-        content.setFont(PDType1Font.HELVETICA_BOLD, 25);
+        content.setFont(titleFont, titleFontSize);
+        content.moveTextPositionByAmount((page.getMediaBox().getWidth() - titleWidth) / 2, page.getMediaBox().getHeight() - marginTop - titleHeight);
         content.showText(outTitle);
         content.newLine();
-        
+        content.newLine();
+        content.endText();
     }
     
     public void addOwnerMessage(Message message) throws IOException {
@@ -72,4 +82,5 @@ class DocumentPDF implements Document {
     //Instance variables
     private PDDocument pdfDocument;
     private PDPageContentStream content;
+    private PDPage page;
 }
