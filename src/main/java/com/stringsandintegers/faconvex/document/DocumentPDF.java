@@ -13,6 +13,7 @@ import rst.pdfbox.layout.elements.Paragraph;
 import rst.pdfbox.layout.text.Alignment;
 import rst.pdfbox.layout.text.Constants;
 import rst.pdfbox.layout.text.BaseFont;
+import rst.pdfbox.layout.elements.render.VerticalLayoutHint;
 
 /**
  * This class creates a PDF file
@@ -48,39 +49,39 @@ class DocumentPDF implements Document {
         
         //Print the title in the PDF document
         Paragraph titleParagraph = new Paragraph();
-        titleParagraph.addText(outTitle + "\n", TITLE_FONT_SIZE, PDType1Font.HELVETICA_BOLD);
+        titleParagraph.addText(outTitle + "\n\n", TITLE_FONT_SIZE, PDType1Font.HELVETICA_BOLD);
         titleParagraph.setAlignment(Alignment.Center);
         pdfDocument.add(titleParagraph);
     }
     
     public void addOwnerMessage(Message message) throws IOException {
         //Convert the message into a string to be printed on the PDF document
-        String outMessage = message.getSender() + " at _" + message.getDate() + "_\n" + message.getMessage() + "\n";
+        String outMessage = message.getSender() + " at _" + message.getDate() + "_\n" + message.getMessage() + "\n\n";
         
         //Initialize the font size for the message
-        int messageFontSize = 16;
+        int messageFontSize = 12;
         
         //Print the message on the PDF document
         Paragraph ownerParagraph = new Paragraph();
         ownerParagraph.addMarkup(outMessage, messageFontSize, BaseFont.Times);
         ownerParagraph.setMaxWidth(MESSAGE_BOX_SIZE);   //Set the message box size
         ownerParagraph.setAlignment(Alignment.Right);
-        pdfDocument.add(ownerParagraph);
+        pdfDocument.add(ownerParagraph, VerticalLayoutHint.RIGHT);
     }
     
     public void addRecipientMessage(Message message) throws IOException {
         //Convert the message into a string to be printed on the PDF document
-        String outMessage = message.getSender() + " at _" + message.getDate() + "_\n" + message.getMessage() + "\n";
+        String outMessage = message.getSender() + " at _" + message.getDate() + "_\n" + message.getMessage() + "\n\n";
         
         //Initialize the font size and type for the message
-        int messageFontSize = 16;
+        int messageFontSize = 12;
         
         //Print the message on the PDF document (left-aligned)
         Paragraph recipientParagraph = new Paragraph();
         recipientParagraph.addMarkup(outMessage, messageFontSize, BaseFont.Times);
         recipientParagraph.setMaxWidth(MESSAGE_BOX_SIZE);   //Set the message box size
         recipientParagraph.setAlignment(Alignment.Left);
-        pdfDocument.add(recipientParagraph);
+        pdfDocument.add(recipientParagraph, VerticalLayoutHint.LEFT);
     }
     
     public void close(File outputFile) throws IOException {
@@ -93,13 +94,13 @@ class DocumentPDF implements Document {
     //Class constants
     //Document margins
     private static final int LEFT_MARGIN = 40;
-    private static final int RIGHT_MARGIN = 60;
+    private static final int RIGHT_MARGIN = 40;
     private static final int TOP_MARGIN = 40;
-    private static final int BOTTOM_MARGIN = 60;
+    private static final int BOTTOM_MARGIN = 40;
     
     //Font sizes
-    private static final int TITLE_FONT_SIZE = 24;
+    private static final int TITLE_FONT_SIZE = 20;
     
     //Messsages box size
-    private static final int MESSAGE_BOX_SIZE = 200;
+    private static final int MESSAGE_BOX_SIZE = 250;
 }

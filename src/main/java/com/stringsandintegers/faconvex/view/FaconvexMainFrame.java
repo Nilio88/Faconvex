@@ -147,8 +147,13 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemOpen);
 
-        jMenuItemExport.setText("Export as...");
+        jMenuItemExport.setText("Export as PDF file...");
         jMenuItemExport.setEnabled(false);
+        jMenuItemExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemExportActionPerformed(evt);
+            }
+        });
         jMenuFile.add(jMenuItemExport);
         jMenuFile.add(jSeparator1);
 
@@ -276,8 +281,20 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemAboutActionPerformed
 
     private void jButtonExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExportPDFActionPerformed
+        exportPDF();
+    }//GEN-LAST:event_jButtonExportPDFActionPerformed
+
+    private void jMenuItemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExportActionPerformed
+        exportPDF();
+    }//GEN-LAST:event_jMenuItemExportActionPerformed
+
+    private void exportPDF() {
         //Open the file chooser to get the path where to save the output document
         JFileChooser fc = new JFileChooser();
+        
+        //Creates and sets the file filter (only html files allowed)
+        FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("PDF files", "pdf");
+        fc.setFileFilter(fileFilter);
         
         //Change the label text in "Loading..."
         jLabelStatus.setText("Exporting...");
@@ -294,6 +311,8 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         
         if(result == JFileChooser.APPROVE_OPTION) {
             File outputFile = fc.getSelectedFile();
+            if (!(outputFile.toString()).endsWith(".pdf"))
+                outputFile = new File(fc.getSelectedFile() + ".pdf");
             
             System.out.println("Saving file in: " + outputFile);
             
@@ -304,6 +323,9 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
             
             try {
                 FaconvexMainController.exportConversation(selectedIndex, DocumentCostantTypes.PDF_DOCUMENT, outputFile);
+                
+                //Feedback message for the user
+                JOptionPane.showMessageDialog(this, "Conversation exported successfully in a PDF file.", "Export to PDF",JOptionPane.PLAIN_MESSAGE);
             }
             catch(IOException ex) {
                 JOptionPane.showMessageDialog(this, "An error occurred while exporting the conversation:\n" + ex, "Error", JOptionPane.ERROR_MESSAGE);
@@ -323,11 +345,8 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         jButtonExportPDF.setEnabled(true);
         jMenuFile.setEnabled(true);
         jMenuHelp.setEnabled(true);
-        
-        //Feedback message for the user
-        JOptionPane.showMessageDialog(this, "Conversation exported successfully in a PDF file.", "Export to PDF",JOptionPane.PLAIN_MESSAGE);
-    }//GEN-LAST:event_jButtonExportPDFActionPerformed
-
+    }
+    
     /**
      * @param args the command line arguments
      */
