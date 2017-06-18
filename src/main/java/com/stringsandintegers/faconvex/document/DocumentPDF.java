@@ -8,7 +8,6 @@ import com.stringsandintegers.faconvex.model.Message;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import rst.pdfbox.layout.elements.Paragraph;
 import rst.pdfbox.layout.text.Alignment;
