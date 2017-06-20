@@ -73,7 +73,7 @@ class DocumentPDF implements Document {
         String outMessage = message.getMessage() + "\n\n";
         
         Paragraph ownerParagraph = new Paragraph();
-        ownerParagraph.addText(outMessage, messageFontSize, PDType1Font.TIMES_ROMAN);
+        ownerParagraph.addText(convertUTF8(outMessage), messageFontSize, PDType1Font.TIMES_ROMAN);
         ownerParagraph.setMaxWidth(MESSAGE_BOX_SIZE);   //Set the message box size
         ownerParagraph.setAlignment(Alignment.Right);
         pdfDocument.add(ownerParagraph, VerticalLayoutHint.RIGHT);
@@ -97,7 +97,7 @@ class DocumentPDF implements Document {
         String outMessage = message.getMessage() + "\n\n";
         
         Paragraph recipientParagraph = new Paragraph();
-        recipientParagraph.addMarkup(outMessage, messageFontSize, BaseFont.Times);
+        recipientParagraph.addMarkup(convertUTF8(outMessage), messageFontSize, BaseFont.Times);
         recipientParagraph.setMaxWidth(MESSAGE_BOX_SIZE);   //Set the message box size
         recipientParagraph.setAlignment(Alignment.Left);
         pdfDocument.add(recipientParagraph, VerticalLayoutHint.LEFT);
@@ -105,6 +105,16 @@ class DocumentPDF implements Document {
     
     public void close(File outputFile) throws IOException {
         pdfDocument.save(new FileOutputStream(outputFile));
+    }
+    
+    /**
+     * Converts the message in a UTF-8 charset string.
+     * @param messageToConvert The message to convert.
+     * @return The message converted in UTF-8 charset.
+     */
+    private String convertUTF8(String messageToConvert) {
+        Charset utf8Charset = Charset.forName("UTF-8");
+        return utf8Charset.decode(utf8Charset.encode(messageToConvert)).toString();
     }
     
     //Instance variables
