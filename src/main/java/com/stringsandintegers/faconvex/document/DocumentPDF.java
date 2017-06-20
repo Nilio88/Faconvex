@@ -8,6 +8,7 @@ import com.stringsandintegers.faconvex.model.Message;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import rst.pdfbox.layout.elements.Paragraph;
 import rst.pdfbox.layout.text.Alignment;
@@ -56,14 +57,23 @@ class DocumentPDF implements Document {
     
     public void addOwnerMessage(Message message) throws IOException {
         //Convert the message into a string to be printed on the PDF document
-        String outMessage = message.getSender() + " at _" + message.getDate() + "_\n" + message.getMessage() + "\n\n";
+        String outHeader = message.getSender() + " at _" + message.getDate() + "_\n";
         
         //Initialize the font size for the message
         int messageFontSize = 12;
         
+        //Print the header on the PDF document
+        Paragraph headerParagraph = new Paragraph();
+        headerParagraph.addMarkup(outHeader, messageFontSize, BaseFont.Helvetica);
+        headerParagraph.setMaxWidth(MESSAGE_BOX_SIZE);   //Set the message box size
+        headerParagraph.setAlignment(Alignment.Right);
+        pdfDocument.add(headerParagraph, VerticalLayoutHint.RIGHT);
+        
         //Print the message on the PDF document
+        String outMessage = message.getMessage() + "\n\n";
+        
         Paragraph ownerParagraph = new Paragraph();
-        ownerParagraph.addMarkup(outMessage, messageFontSize, BaseFont.Times);
+        ownerParagraph.addText(outMessage, messageFontSize, PDType1Font.TIMES_ROMAN);
         ownerParagraph.setMaxWidth(MESSAGE_BOX_SIZE);   //Set the message box size
         ownerParagraph.setAlignment(Alignment.Right);
         pdfDocument.add(ownerParagraph, VerticalLayoutHint.RIGHT);
@@ -71,12 +81,21 @@ class DocumentPDF implements Document {
     
     public void addRecipientMessage(Message message) throws IOException {
         //Convert the message into a string to be printed on the PDF document
-        String outMessage = message.getSender() + " at _" + message.getDate() + "_\n" + message.getMessage() + "\n\n";
+        String outHeader = message.getSender() + " at _" + message.getDate() + "_\n";
         
         //Initialize the font size and type for the message
         int messageFontSize = 12;
         
+        //Print the header on the PDF document
+        Paragraph headerParagraph = new Paragraph();
+        headerParagraph.addMarkup(outHeader, messageFontSize, BaseFont.Helvetica);
+        headerParagraph.setMaxWidth(MESSAGE_BOX_SIZE);   //Set the message box size
+        headerParagraph.setAlignment(Alignment.Left);
+        pdfDocument.add(headerParagraph, VerticalLayoutHint.LEFT);
+        
         //Print the message on the PDF document (left-aligned)
+        String outMessage = message.getMessage() + "\n\n";
+        
         Paragraph recipientParagraph = new Paragraph();
         recipientParagraph.addMarkup(outMessage, messageFontSize, BaseFont.Times);
         recipientParagraph.setMaxWidth(MESSAGE_BOX_SIZE);   //Set the message box size
