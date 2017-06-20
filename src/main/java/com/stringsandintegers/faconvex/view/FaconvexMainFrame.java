@@ -290,7 +290,34 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
 
     private void exportPDF() {
         //Open the file chooser to get the path where to save the output document
-        JFileChooser fc = new JFileChooser();
+        JFileChooser fc = new JFileChooser() {
+            @Override
+            public void approveSelection() {
+                File outputFile = getSelectedFile();
+                
+                System.out.println("Selected file: " + outputFile);
+                
+                if (!(outputFile.toString()).endsWith(".pdf"))
+                outputFile = new File(getSelectedFile() + ".pdf");
+                
+                System.out.println("Output file with extension: " + outputFile);
+            
+                //Check whether the file already exists
+                if (outputFile.exists() && getDialogType() == SAVE_DIALOG) {
+                    int result = JOptionPane.showConfirmDialog(this, "The file " + outputFile.getName() + " already exists.\n Do you really want to overwrite it?", "Existing file", JOptionPane.YES_NO_OPTION);
+                    switch(result) {
+                        case JOptionPane.YES_OPTION:
+                            super.approveSelection();
+                            return;
+                        default:
+                            return;
+                    }
+                }
+                
+                //Save directly if it doesn't exist
+                super.approveSelection();
+            }
+        };
         
         //Creates and sets the file filter (only html files allowed)
         FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("PDF files", "pdf");
@@ -309,8 +336,9 @@ public class FaconvexMainFrame extends javax.swing.JFrame {
         
         int result = fc.showSaveDialog(this);
         
-        if(result == JFileChooser.APPROVE_OPTION) {
+        if (result == JFileChooser.APPROVE_OPTION) {
             File outputFile = fc.getSelectedFile();
+            
             if (!(outputFile.toString()).endsWith(".pdf"))
                 outputFile = new File(fc.getSelectedFile() + ".pdf");
             
