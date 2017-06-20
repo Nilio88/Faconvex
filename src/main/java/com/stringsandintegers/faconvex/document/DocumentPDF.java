@@ -70,10 +70,10 @@ class DocumentPDF implements Document {
         pdfDocument.add(headerParagraph, VerticalLayoutHint.RIGHT);
         
         //Print the message on the PDF document
-        String outMessage = message.getMessage() + "\n\n";
+        String outMessage = message.getMessage();
         
         Paragraph ownerParagraph = new Paragraph();
-        ownerParagraph.addText(convertUTF8(outMessage), messageFontSize, PDType1Font.TIMES_ROMAN);
+        ownerParagraph.addText(removeNonPrintableChars(outMessage) + "\n\n", messageFontSize, PDType1Font.TIMES_ROMAN);
         ownerParagraph.setMaxWidth(MESSAGE_BOX_SIZE);   //Set the message box size
         ownerParagraph.setAlignment(Alignment.Right);
         pdfDocument.add(ownerParagraph, VerticalLayoutHint.RIGHT);
@@ -94,10 +94,10 @@ class DocumentPDF implements Document {
         pdfDocument.add(headerParagraph, VerticalLayoutHint.LEFT);
         
         //Print the message on the PDF document (left-aligned)
-        String outMessage = message.getMessage() + "\n\n";
+        String outMessage = message.getMessage();
         
         Paragraph recipientParagraph = new Paragraph();
-        recipientParagraph.addMarkup(convertUTF8(outMessage), messageFontSize, BaseFont.Times);
+        recipientParagraph.addMarkup(removeNonPrintableChars(outMessage) + "\n\n", messageFontSize, BaseFont.Times);
         recipientParagraph.setMaxWidth(MESSAGE_BOX_SIZE);   //Set the message box size
         recipientParagraph.setAlignment(Alignment.Left);
         pdfDocument.add(recipientParagraph, VerticalLayoutHint.LEFT);
@@ -112,9 +112,8 @@ class DocumentPDF implements Document {
      * @param messageToConvert The message to convert.
      * @return The message converted in UTF-8 charset.
      */
-    private String convertUTF8(String messageToConvert) {
-        Charset utf8Charset = Charset.forName("UTF-8");
-        return utf8Charset.decode(utf8Charset.encode(messageToConvert)).toString();
+    private String removeNonPrintableChars(String messageToConvert) {
+        return messageToConvert.replaceAll("\\p{C}", "?");
     }
     
     //Instance variables
